@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <EditText
         android:id="@+id/fragment_note_title"
         tools:text="Title"
         android:layout_width="match_parent"
@@ -15,15 +15,25 @@
         app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/fragment_note_description"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:padding="8dp"
+        android:gravity="top|left"
         app:layout_constraintTop_toBottomOf="@id/fragment_note_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text= "Integer fermentum pellentesque aliquet. Vestibulum scelerisque, dolor et suscipit malesuada, ipsum libero egestas mauris, at tempor urna orci a nunc. Nam posuere eros leo, sit amet placerat arcu sagittis et. Nunc urna mauris, auctor eget porttitor ut, bibendum at massa. Morbi egestas ac arcu vel mattis. Proin venenatis augue placerat, consequat lorem in, mollis velit. Cras sed sem bibendum, blandit dolor finibus, pellentesque velit. Vivamus varius in dolor eu varius. Nullam a sodales ante."
         />
+
+    <Button
+        android:id="@+id/btn_save_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Note"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 </android.support.constraint.ConstraintLayout>

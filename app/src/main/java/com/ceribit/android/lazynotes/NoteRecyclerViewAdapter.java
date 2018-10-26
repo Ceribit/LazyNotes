@@ -2,6 +2,7 @@ package com.ceribit.android.lazynotes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,13 +65,20 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
                     FragmentManager fragmentManager = ((MainActivity) mContext)
                             .getSupportFragmentManager();
                     NoteFragment noteFragment = new NoteFragment();
+                    noteFragment.setArguments(createNoteBundle(getAdapterPosition()));
                     fragmentManager.beginTransaction()
                             .replace(R.id.main_container, noteFragment)
                             .addToBackStack(null)
                             .commit();
-                    Log.e(NoteRecyclerViewAdapter.class.getSimpleName(), "Transaction called");
                 }
             });
         }
+    }
+
+    private Bundle createNoteBundle(int position){
+        Bundle bundle = new Bundle();
+        bundle.putString(NoteFragment.TITLE_KEY, mNotes.get(position).getTitle());
+        bundle.putString(NoteFragment.DESCRIPTION_KEY, mNotes.get(position).getDescription());
+        return bundle;
     }
 }
