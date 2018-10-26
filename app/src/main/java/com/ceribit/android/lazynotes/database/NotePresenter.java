@@ -1,4 +1,4 @@
-package com.ceribit.android.lazynotes.Database;
+package com.ceribit.android.lazynotes.database;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -7,12 +7,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.ceribit.android.lazynotes.Database.NoteContract.NoteEntry;
+import com.ceribit.android.lazynotes.database.NoteContract.NoteEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotePresenter {
+
 
     public static void addNote(Context context, Note note){
         ContentResolver contentResolver = context.getContentResolver();
@@ -23,30 +24,38 @@ public class NotePresenter {
         contentValues.put(NoteEntry.COLUMN_NOTE_DESCRIPTION, note.getDescription());
         contentValues.put(NoteEntry.COLUMN_NOTE_IMPORTANCE, note.getImportanceLevel());
 
-        Uri noteUri = NoteEntry.CONTENT_URI;
 
-        contentResolver.insert(noteUri, contentValues);
+        contentResolver.insert(NoteEntry.CONTENT_URI, contentValues);
     }
 
-    public static List<Note> getAllNotes(Context context){
+    public static ArrayList<Note> getAllNotes(Context context){
         ContentResolver contentResolver = context.getContentResolver();
 
-
-        Uri queryAllNotesUri = Uri.parse(NoteEntry.CONTENT_URI + "/101");
-
-        Cursor cursor = contentResolver.query(queryAllNotesUri,
+        Cursor cursor = contentResolver.query(NoteEntry.CONTENT_URI,
                 null,
                 null,
                 null,
                 null);
 
+
+        int TITLE_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_TITLE);
+        int DESCRIPTION_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_DESCRIPTION);
+        int IMPORTANCE_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_IMPORTANCE);
+
         ArrayList<Note> noteList = new ArrayList<>();
-        if(cursor != null) {
-            cursor.moveToPosition(0);
-            while (cursor.moveToNext()){
-                Log.e("NotePresenter", "Note Presenter Test" + cursor.getString(0));
-            }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            Note newNote = new Note(
+                    cursor.getString(TITLE_INDEX),
+                    cursor.getString(DESCRIPTION_INDEX),
+                    Integer.valueOf(cursor.getString(IMPORTANCE_INDEX))
+            );
+            cursor.moveToNext();
+            noteList.add(newNote);
         }
+        cursor.close();
+
         return noteList;
     }
 }

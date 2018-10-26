@@ -1,4 +1,4 @@
-package com.ceribit.android.lazynotes.Database;
+package com.ceribit.android.lazynotes.database;
 
 import android.content.ContentResolver;
 import android.net.Uri;

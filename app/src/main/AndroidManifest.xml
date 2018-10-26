@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.ceribit.android.lazynotes"
+            android:name="com.ceribit.android.lazynotes.database.NoteProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

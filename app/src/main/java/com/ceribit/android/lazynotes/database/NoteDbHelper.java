@@ -1,10 +1,10 @@
-package com.ceribit.android.lazynotes.Database;
+package com.ceribit.android.lazynotes.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ceribit.android.lazynotes.Database.NoteContract.NoteEntry;
+import com.ceribit.android.lazynotes.database.NoteContract.NoteEntry;
 public class NoteDbHelper extends SQLiteOpenHelper {
 
     // Database info
@@ -26,7 +26,7 @@ public class NoteDbHelper extends SQLiteOpenHelper {
                 + NoteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + NoteEntry.COLUMN_NOTE_TITLE + " TEXT NOT NULL,"
                 + NoteEntry.COLUMN_NOTE_DESCRIPTION + " TEXT NOT NULL,"
-                + NoteEntry.COLUMN_NOTE_IMPORTANCE + " INTEGER NOT NULL DEFAULT 1)；";
+                + NoteEntry.COLUMN_NOTE_IMPORTANCE + " INTEGER NOT NULL DEFAULT 1);";
         sqLiteDatabase.execSQL(SQL_CREATE_PETS_TABLE);
     }
 

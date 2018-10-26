@@ -1,18 +1,16 @@
 package com.ceribit.android.lazynotes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ceribit.android.lazynotes.Database.Note;
+import com.ceribit.android.lazynotes.database.Note;
 
 import java.util.List;
 

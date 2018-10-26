@@ -1,6 +1,7 @@
-package com.ceribit.android.lazynotes.Database;
+package com.ceribit.android.lazynotes.database;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class NoteProvider extends ContentProvider {
     /**
@@ -42,20 +44,37 @@ public class NoteProvider extends ContentProvider {
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         // Get readable database
         mDatabase = mDbHelper.getReadableDatabase();
-        Cursor cursor;
+        Cursor cursor = null;
         int match = sUriMatcher.match(uri);
         switch (match){
             case NOTES:
-                break;
+                cursor = mDatabase.query(NoteContract.NoteEntry.TABLE_NAME,
+                        null, null, null, null, null
+                ,null);
             case NOTE_ID:
                 break;
         }
-        return null;
+
+//        if(cursor != null){
+//            cursor.close();
+//        }
+
+        return cursor;
     }
 
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        switch(sUriMatcher.match(uri)){
+            case NOTES:
+                long _id = db.insert(NoteContract.NoteEntry.TABLE_NAME, null, contentValues);
+                Log.e("InsertPet", "Inserted pet has ID: " + _id);
+                return ContentUris.withAppendedId(uri,_id);
+
+        }
+        Log.e("InsertPet", "No pet inserted.");
+
         return null;
     }
 

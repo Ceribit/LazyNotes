@@ -1,7 +1,7 @@
 package com.ceribit.android.lazynotes;
 
-import com.ceribit.android.lazynotes.Database.Note;
-import com.ceribit.android.lazynotes.Database.Note.Importance;
+import com.ceribit.android.lazynotes.database.Note;
+import com.ceribit.android.lazynotes.database.Note.Importance;
 
 import org.junit.Test;
 
