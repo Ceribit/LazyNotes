@@ -55,9 +55,9 @@ public class NoteProvider extends ContentProvider {
                 break;
         }
 
-//        if(cursor != null){
-//            cursor.close();
-//        }
+        if(cursor != null){
+            //cursor.close();
+        }
 
         return cursor;
     }
@@ -66,27 +66,62 @@ public class NoteProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        if(contentValues == null){
+            return null;
+        }
+
         switch(sUriMatcher.match(uri)){
             case NOTES:
-                long _id = db.insert(NoteContract.NoteEntry.TABLE_NAME, null, contentValues);
-                Log.e("InsertPet", "Inserted pet has ID: " + _id);
-                return ContentUris.withAppendedId(uri,_id);
+                String noteTitle = contentValues.getAsString(NoteContract.NoteEntry.COLUMN_NOTE_TITLE);
+                if(isValidText(noteTitle)) {
+                    long _id = db.insert(NoteContract.NoteEntry.TABLE_NAME, null, contentValues);
+                    return ContentUris.withAppendedId(uri, _id);
+                }
 
         }
-        Log.e("InsertPet", "No pet inserted.");
 
         return null;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch(match){
+            case NOTES:
+                break;
+            case NOTE_ID:
+                SQLiteDatabase database = mDbHelper.getWritableDatabase();
+                selection = NoteContract.NoteEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                int rowsDeleted =  database.delete(
+                        NoteContract.NoteEntry.TABLE_NAME, selection, selectionArgs);
+                return rowsDeleted;
+        }
         return 0;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
                       @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        int rowsUpdated = -1;
+        switch(match){
+            case NOTES:
+                break;
+            case NOTE_ID:
+                SQLiteDatabase database = mDbHelper.getWritableDatabase();
+                selection = NoteContract.NoteEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                String title = contentValues.getAsString(NoteContract.NoteEntry.COLUMN_NOTE_TITLE);
+                if(isValidText(title)) {
+                    rowsUpdated = database.update(NoteContract.NoteEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                    Log.e("Update", "Rows updated : " + rowsUpdated);
+                }
+
+        }
+        Log.e("Update", "Rows updated : " + rowsUpdated);
+
+        return rowsUpdated;
     }
 
     @Nullable
@@ -101,5 +136,10 @@ public class NoteProvider extends ContentProvider {
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
+    }
+
+    public static boolean isValidText(String word){
+        boolean isOnlyWhiteSpace = (word.trim().length() == 0);
+        return !(word.isEmpty() || isOnlyWhiteSpace);
     }
 }

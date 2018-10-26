@@ -49,4 +49,12 @@ public class NoteRecyclerViewFragment extends Fragment {
 
         return rootView;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(getActivity() != null) {
+            getActivity().finish();
+        }
+    }
 }

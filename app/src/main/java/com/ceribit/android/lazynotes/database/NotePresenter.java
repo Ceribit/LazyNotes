@@ -1,6 +1,7 @@
 package com.ceribit.android.lazynotes.database;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +13,9 @@ import com.ceribit.android.lazynotes.database.NoteContract.NoteEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * TODO: Remove android dependencies somehow...
+ */
 public class NotePresenter {
 
 
@@ -29,7 +33,21 @@ public class NotePresenter {
     }
 
     public static void updateNote(Context context, Note note){
+        ContentResolver contentResolver = context.getContentResolver();
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteEntry.COLUMN_NOTE_TITLE, note.getTitle());
+        contentValues.put(NoteEntry.COLUMN_NOTE_DESCRIPTION, note.getDescription());
+        contentValues.put(NoteEntry.COLUMN_NOTE_IMPORTANCE, note.getImportanceLevel());
+
+        Log.e("UpdateNotesFunc", ""+note.getId());
+        Uri updateUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI, note.getId());
+
+        contentResolver.update(
+                updateUri,
+                contentValues,
+                null,
+                null);
     }
 
     public static ArrayList<Note> getAllNotes(Context context){
@@ -62,5 +80,12 @@ public class NotePresenter {
         cursor.close();
 
         return noteList;
+    }
+
+    public static void deleteNote(Context context, int id){
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Uri deleteUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI, id);
+        contentResolver.delete(deleteUri, null, null);
     }
 }

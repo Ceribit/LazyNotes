@@ -45,11 +45,6 @@ public class NoteFragment extends Fragment {
         if(mNote != null){
             titleEditText.setText(mNote.getTitle());
             descriptionEditText.setText(mNote.getDescription());
-        } else {
-            titleEditText.setText("Default Text");
-            descriptionEditText.setText(
-                    "Integer fermentum pellentesque aliquet. Vestibulum scelerisque, dolor et suscipit malesuada, ipsum libero egestas mauris, at tempor urna orci a nunc. Nam posuere eros leo, sit amet placerat arcu sagittis et. Nunc urna mauris, auctor eget porttitor ut, bibendum at massa. Morbi egestas ac arcu vel mattis. Proin venenatis augue placerat, consequat lorem in, mollis velit. Cras sed sem bibendum, blandit dolor finibus, pellentesque velit. Vivamus varius in dolor eu varius. Nullam a sodales ante."
-            );
         }
 
         Button saveButton = rootView.findViewById(R.id.btn_save_note);
@@ -63,10 +58,27 @@ public class NoteFragment extends Fragment {
                         descriptionEditText.getText().toString(),
                         1
                         );
-                if(mNote != null){
+                if(mNote != null) {
+                    Log.e("Update Note", "updated note called");
+                    newNote.setId(mNote.getId());
                     NotePresenter.updateNote(getContext(), newNote);
                 } else{
                     NotePresenter.addNote(getContext(), newNote);
+                }
+            }
+        });
+
+        Button deleteButton = rootView.findViewById(R.id.btn_delete_note);
+        if(mNote == null){
+            deleteButton.setVisibility(View.GONE);
+        }
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mNote != null){
+                    getFragmentManager().popBackStack();
+
+                    NotePresenter.deleteNote(getContext(), mNote.getId());
                 }
             }
         });

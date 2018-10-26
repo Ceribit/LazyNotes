@@ -1,6 +1,15 @@
 # LazyNotes
 This is a simple note-taking app that aims to make notes even lazier.
 
+Features to add (short term):
+    - Preserve fragments after rotations
+    - Save notes upon exiting (if changed)
+    - Use asynchronous tasks to call data
+    - Add a loading screen
+    
+Features to add (long term):
+    - Support for larger devices
+    
 I'm taking this project to learn the following concepts:
 - Creating content providers manually
 - Refactoring Code

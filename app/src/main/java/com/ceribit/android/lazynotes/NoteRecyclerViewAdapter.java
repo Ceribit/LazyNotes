@@ -85,6 +85,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         Bundle bundle = new Bundle();
         bundle.putString(NoteFragment.TITLE_KEY, mNotes.get(position).getTitle());
         bundle.putString(NoteFragment.DESCRIPTION_KEY, mNotes.get(position).getDescription());
+        bundle.putInt(NoteFragment.ID_KEY, mNotes.get(position).getId());
         return bundle;
     }
 }
