@@ -2,7 +2,9 @@ package com.ceribit.android.lazynotes.RecyclerViewTestUtils;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -39,7 +41,6 @@ public class RecyclerViewMatcher {
                                         (recyclerViewId) });
                     }
                 }
-
                 description.appendText("with id: " + idDescription);
             }
 
@@ -62,6 +63,7 @@ public class RecyclerViewMatcher {
                     return view == childView;
                 } else {
                     View targetView = childView.findViewById(targetViewId);
+
                     return view == targetView;
                 }
 
