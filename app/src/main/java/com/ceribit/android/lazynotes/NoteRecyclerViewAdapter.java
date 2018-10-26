@@ -1,6 +1,7 @@
 package com.ceribit.android.lazynotes;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -45,8 +46,15 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Note currentNote = mNotes.get(position);
 
+        TypedArray colorArray = mContext.getResources().obtainTypedArray(R.array.importance_colors);
         viewHolder.mTitleTextView.setText(currentNote.getTitle());
         viewHolder.mDescriptionTextView.setText(currentNote.getDescription());
+        viewHolder.itemView.setBackgroundColor(
+                        mContext.getResources().getColor
+                                (colorArray.getResourceId(
+                                currentNote.getImportanceLevel(),
+                                Note.Importance.NEUTRAL.getImportanceLevel())));
+        colorArray.recycle();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -18,16 +18,19 @@ public class NoteFragment extends Fragment {
 
     public static String TITLE_KEY = "NOTE_TITLE";
     public static String DESCRIPTION_KEY = "NOTE_DESCRIPTION";
+    public static String ID_KEY = "NOTE_ID";
 
-    private Note mNote;
+    private Note mNote = null;
 
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
         if(args != null){
-            String noteTitle = args.getString(TITLE_KEY, "Add title here...");
-            String noteDescription = args.getString(DESCRIPTION_KEY, "...");
+            String noteTitle = args.getString(TITLE_KEY, "");
+            String noteDescription = args.getString(DESCRIPTION_KEY, "");
+            int noteId = args.getInt(ID_KEY, Note.NO_ID);
             mNote = new Note(noteTitle, noteDescription, 0);
+            mNote.setId(noteId);
         }
     }
 
@@ -58,9 +61,13 @@ public class NoteFragment extends Fragment {
                 Note newNote = new Note(
                         titleEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
-                        0
+                        1
                         );
-                NotePresenter.addNote(getContext(), newNote);
+                if(mNote != null){
+                    NotePresenter.updateNote(getContext(), newNote);
+                } else{
+                    NotePresenter.addNote(getContext(), newNote);
+                }
             }
         });
         return rootView;

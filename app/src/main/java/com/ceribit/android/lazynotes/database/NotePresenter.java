@@ -28,6 +28,10 @@ public class NotePresenter {
         contentResolver.insert(NoteEntry.CONTENT_URI, contentValues);
     }
 
+    public static void updateNote(Context context, Note note){
+
+    }
+
     public static ArrayList<Note> getAllNotes(Context context){
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -37,7 +41,7 @@ public class NotePresenter {
                 null,
                 null);
 
-
+        int ID_INDEX = cursor.getColumnIndex(NoteEntry._ID);
         int TITLE_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_TITLE);
         int DESCRIPTION_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_DESCRIPTION);
         int IMPORTANCE_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_IMPORTANCE);
@@ -51,6 +55,7 @@ public class NotePresenter {
                     cursor.getString(DESCRIPTION_INDEX),
                     Integer.valueOf(cursor.getString(IMPORTANCE_INDEX))
             );
+            newNote.setId(cursor.getInt(ID_INDEX));
             cursor.moveToNext();
             noteList.add(newNote);
         }

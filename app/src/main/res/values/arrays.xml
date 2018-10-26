@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="importance_colors">
+        <item>@color/notImportant</item>
+        <item>@color/neutral</item>
+        <item>@color/important</item>
+        <item>@color/veryImportant</item>
+    </array>
+</resources>

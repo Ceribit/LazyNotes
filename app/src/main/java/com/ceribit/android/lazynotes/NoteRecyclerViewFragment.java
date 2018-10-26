@@ -25,14 +25,8 @@ public class NoteRecyclerViewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.note_recycler_view_layout, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.note_recycler_view);
 
-        ArrayList<Note> notesList = new ArrayList<>();
-        for(int i = 0; i < 200; i++){
-            notesList.add(
-                    new Note("title", "description", 0)
-            );
-        }
+        ArrayList<Note> notesList = NotePresenter.getAllNotes(getContext());
 
-        notesList = NotePresenter.getAllNotes(getContext());
         FloatingActionButton floatingActionButton = rootView.findViewById(R.id.fab_add_note);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,10 +35,6 @@ public class NoteRecyclerViewFragment extends Fragment {
                         ((MainActivity) getContext()).getSupportFragmentManager();
                 if(fragmentManager != null){
                     NoteFragment noteFragment = new NoteFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(NoteFragment.TITLE_KEY, "New Title");
-                    bundle.putString(NoteFragment.DESCRIPTION_KEY, "New Description");
-                    noteFragment.setArguments(bundle);
                     fragmentManager.beginTransaction()
                             .replace(R.id.main_container, noteFragment)
                             .addToBackStack(null)

@@ -14,15 +14,17 @@
         tools:text="SampleTitle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         />
     <TextView
         android:id="@+id/grid_item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:gravity="center"
+        android:gravity="start"
+        android:maxLines="3"
         tools:text="SampleDescription"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintTop_toBottomOf="@id/grid_item_title"
         app:layout_constraintLeft_toLeftOf="parent"/>
 </android.support.constraint.ConstraintLayout>
