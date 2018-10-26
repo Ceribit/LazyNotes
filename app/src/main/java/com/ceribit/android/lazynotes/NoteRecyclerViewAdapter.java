@@ -1,8 +1,11 @@
 package com.ceribit.android.lazynotes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +54,21 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         TextView mTitleTextView;
         TextView mDescriptionTextView;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             mTitleTextView = itemView.findViewById(R.id.grid_item_title);
             mDescriptionTextView = itemView.findViewById(R.id.grid_item_description);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mTitleTextView.setText("New Title");
+                    FragmentManager fragmentManager = ((MainActivity) mContext)
+                            .getSupportFragmentManager();
+                    NoteFragment noteFragment = new NoteFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.main_container, noteFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    Log.e(NoteRecyclerViewAdapter.class.getSimpleName(), "Transaction called");
                 }
             });
         }

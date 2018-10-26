@@ -16,15 +16,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.note_recycler_view);
-        ArrayList<Note> notesList = new ArrayList<>();
-        for(int i = 0; i < 200; i++){
-            notesList.add(
-                    new Note("title", "description", 0)
-            );
-        }
-        NoteRecyclerViewAdapter adapter = new NoteRecyclerViewAdapter(this, notesList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        NoteRecyclerViewFragment recyclerViewFragment = new NoteRecyclerViewFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, recyclerViewFragment)
+                .addToBackStack(null)
+                .commit();
+
+
     }
 }
