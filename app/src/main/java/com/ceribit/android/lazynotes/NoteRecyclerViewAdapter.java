@@ -19,6 +19,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     private List<Note> mNotes;
     private Context mContext;
+    private NoteFragment mNoteFragment = null;
 
     public NoteRecyclerViewAdapter(Context context, List<Note> notes) {
         super();
@@ -70,14 +71,22 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
                 public void onClick(View view) {
                     FragmentManager fragmentManager = ((MainActivity) mContext)
                             .getSupportFragmentManager();
-                    NoteFragment noteFragment = new NoteFragment();
-                    noteFragment.setArguments(createNoteBundle(getAdapterPosition()));
+                    mNoteFragment = new NoteFragment();
+                    mNoteFragment.setArguments(createNoteBundle(getAdapterPosition()));
                     fragmentManager.beginTransaction()
-                            .replace(R.id.main_container, noteFragment)
+                            .replace(R.id.main_container, mNoteFragment)
                             .addToBackStack(null)
                             .commit();
                 }
             });
+        }
+    }
+
+    public Note getClickedNote(){
+        if(mNoteFragment != null) {
+            return mNoteFragment.getCurrentNote();
+        } else{
+            return null;
         }
     }
 
@@ -87,5 +96,17 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         bundle.putString(NoteFragment.DESCRIPTION_KEY, mNotes.get(position).getDescription());
         bundle.putInt(NoteFragment.ID_KEY, mNotes.get(position).getId());
         return bundle;
+    }
+
+    public static Bundle createNoteBundle(Note note){
+        Bundle bundle = new Bundle();
+        bundle.putString(NoteFragment.TITLE_KEY, note.getTitle());
+        bundle.putString(NoteFragment.DESCRIPTION_KEY, note.getDescription());
+        bundle.putInt(NoteFragment.ID_KEY, note.getId());
+        return bundle;
+    }
+
+    public void bindNote(NoteFragment noteFragment){
+        mNoteFragment = noteFragment;
     }
 }

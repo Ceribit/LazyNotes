@@ -22,6 +22,9 @@ public class NoteFragment extends Fragment {
 
     private Note mNote = null;
 
+    private EditText mTitleEditText;
+    private EditText mDescriptionEditText;
+
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
@@ -39,12 +42,12 @@ public class NoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.note_fragment, container, false);
 
-        final EditText titleEditText = rootView.findViewById(R.id.fragment_note_title);
-        final EditText descriptionEditText = rootView.findViewById(R.id.fragment_note_description);
+        mTitleEditText = rootView.findViewById(R.id.fragment_note_title);
+        mDescriptionEditText = rootView.findViewById(R.id.fragment_note_description);
 
         if(mNote != null){
-            titleEditText.setText(mNote.getTitle());
-            descriptionEditText.setText(mNote.getDescription());
+            mTitleEditText.setText(mNote.getTitle());
+            mDescriptionEditText.setText(mNote.getDescription());
         }
 
         Button saveButton = rootView.findViewById(R.id.btn_save_note);
@@ -54,8 +57,8 @@ public class NoteFragment extends Fragment {
                 Log.e("SaveButton", "\"Saved\"");
                 getFragmentManager().popBackStack();
                 Note newNote = new Note(
-                        titleEditText.getText().toString(),
-                        descriptionEditText.getText().toString(),
+                        mTitleEditText.getText().toString(),
+                        mDescriptionEditText.getText().toString(),
                         1
                         );
                 if(mNote != null) {
@@ -85,5 +88,14 @@ public class NoteFragment extends Fragment {
         return rootView;
     }
 
-
+    public Note getCurrentNote(){
+        String title = mTitleEditText.getText().toString();
+        String description = mDescriptionEditText.getText().toString();
+        int importanceLevel = 0;
+        Note currentNote = new Note(title, description, importanceLevel);
+        if(mNote != null){
+            currentNote.setId(mNote.getId());
+        }
+        return currentNote;
+    }
 }

@@ -88,4 +88,6 @@ public class NotePresenter {
         Uri deleteUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI, id);
         contentResolver.delete(deleteUri, null, null);
     }
+
+
 }

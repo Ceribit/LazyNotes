@@ -2,20 +2,23 @@
 This is a simple note-taking app that aims to make notes even lazier.
 
 Features to add (short term):
-    - Preserve fragments after rotations
-    - Save notes upon exiting (if changed)
-    - Use asynchronous tasks to call data
-    - Add a loading screen
+ - [x] Preserve fragments after rotations
+ - [ ] Save notes upon exiting (if changed)
+ - [ ] Use asynchronous tasks to call data
+ - [ ] Add a loading screen
     
 Features to add (long term):
-    - Support for larger devices
+   - Support for larger devices
+    
+Refactoring to do:
+ - [ ] Make getting the savedInstanceState from the current fragment simpler     
     
 I'm taking this project to learn the following concepts:
-- Creating content providers manually
+- [x] Creating content providers manually
 - Refactoring Code
 - Testing all parts of the process such as
-    - Testing Recycler Views with Instrumental Tests
-    - Testing POJO (Plain Old Java Objects) with Unit Testing
+    - [x] Testing Recycler Views with Instrumental Tests
+    - [x] Testing POJO (Plain Old Java Objects) with Unit Testing
     - Testing Asynchronous calls to the database
     - etc..
     
