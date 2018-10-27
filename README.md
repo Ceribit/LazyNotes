@@ -19,7 +19,7 @@ I'm taking this project to learn the following concepts:
 - Testing all parts of the process such as
     - [x] Testing Recycler Views with Instrumental Tests
     - [x] Testing POJO (Plain Old Java Objects) with Unit Testing
-    - Testing Asynchronous calls to the database
+    - [ ] Testing Asynchronous calls to the database
     - etc..
     
 - I hope to refactor this code to involve libraries that would replace boilerplate code as part of this learning process such as:
