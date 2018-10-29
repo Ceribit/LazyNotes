@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    app:background="@color/colorPrimaryDark"
+    app:background="@color/primaryDarkColor"
     />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_note"

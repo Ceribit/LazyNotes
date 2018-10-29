@@ -70,7 +70,7 @@
         android:hint="@string/note_description_hint"
         android:inputType="textMultiLine"
         android:padding="8dp"
-        android:background="@null"
+        android:background="@drawable/grid_item_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -82,6 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save Note"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
@@ -90,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete Note"
-        android:layout_marginRight="8dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/btn_save_note"/>
 </android.support.constraint.ConstraintLayout>

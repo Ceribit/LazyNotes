@@ -1,7 +1,10 @@
 package com.ceribit.android.lazynotes;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -56,11 +59,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         TypedArray colorArray = mContext.getResources().obtainTypedArray(R.array.importance_colors);
         viewHolder.mTitleTextView.setText(currentNote.getTitle());
         viewHolder.mDescriptionTextView.setText(currentNote.getDescription());
-        viewHolder.itemView.setBackgroundColor(
-                        mContext.getResources().getColor
-                                (colorArray.getResourceId(
-                                currentNote.getImportanceLevel(),
-                                Note.Importance.NEUTRAL.getImportanceLevel())));
+
+        Drawable drawable = mContext.getResources().getDrawable(R.drawable.grid_item_background);
+        drawable.setColorFilter(mContext.getResources().getColor
+                (colorArray.getResourceId(
+                        currentNote.getImportanceLevel(),
+                        Note.Importance.NEUTRAL.getImportanceLevel())), PorterDuff.Mode.SRC);
+
+        viewHolder.itemView.setBackground(drawable);
         colorArray.recycle();
     }
 
