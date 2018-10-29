@@ -87,10 +87,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
                             .getSupportFragmentManager();
                     mNoteFragment = new NoteFragment();
                     mNoteFragment.setArguments(createNoteBundle(mNotes.get(getAdapterPosition())));
+
                     fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.zoom_enter, R.anim.zoom_exit,
+                                    R.anim.zoom_enter, R.anim.zoom_exit)
                             .replace(R.id.main_container, mNoteFragment)
                             .addToBackStack(null)
                             .commit();
+
                 }
             });
         }

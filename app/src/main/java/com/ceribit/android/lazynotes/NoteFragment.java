@@ -152,7 +152,8 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
 
+
+        super.onDestroy();
     }
 }

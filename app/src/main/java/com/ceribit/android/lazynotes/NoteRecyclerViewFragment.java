@@ -74,6 +74,8 @@ public class NoteRecyclerViewFragment extends Fragment {
                 noteFragment.setArguments(NoteRecyclerViewAdapter
                         .createNoteBundle(mSavedInstanceNote));
                 fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.do_nothing, R.anim.do_nothing,
+                                R.anim.zoom_enter, R.anim.zoom_exit)
                         .replace(R.id.main_container, noteFragment)
                         .addToBackStack(null)
                         .commit();
