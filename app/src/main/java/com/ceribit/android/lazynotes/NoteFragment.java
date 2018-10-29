@@ -10,20 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.ceribit.android.lazynotes.database.Note;
 import com.ceribit.android.lazynotes.database.NotePresenter;
+import com.ceribit.android.lazynotes.utils.SharedPreferencesManager;
 
 public class NoteFragment extends Fragment {
 
     public static String TITLE_KEY = "NOTE_TITLE";
     public static String DESCRIPTION_KEY = "NOTE_DESCRIPTION";
     public static String ID_KEY = "NOTE_ID";
+    public static String IMPORTANCE_KEY = "IMPORTANCE_KEY";
 
     private Note mNote = null;
 
     private EditText mTitleEditText;
     private EditText mDescriptionEditText;
+    private RadioGroup mRadioGroupImportance;
 
     @Override
     public void setArguments(@Nullable Bundle args) {
@@ -31,8 +36,9 @@ public class NoteFragment extends Fragment {
         if(args != null){
             String noteTitle = args.getString(TITLE_KEY, "");
             String noteDescription = args.getString(DESCRIPTION_KEY, "");
+            int importanceLevel = args.getInt(IMPORTANCE_KEY, 1);
             int noteId = args.getInt(ID_KEY, Note.NO_ID);
-            mNote = new Note(noteTitle, noteDescription, 0);
+            mNote = new Note(noteTitle, noteDescription, importanceLevel);
             mNote.setId(noteId);
         }
     }
@@ -42,24 +48,28 @@ public class NoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.note_fragment, container, false);
 
+        SharedPreferencesManager.setNoteClicked(true);
+
         mTitleEditText = rootView.findViewById(R.id.fragment_note_title);
         mDescriptionEditText = rootView.findViewById(R.id.fragment_note_description);
+        mRadioGroupImportance = rootView.findViewById(R.id.radio_grp_importance);
+
 
         if(mNote != null){
             mTitleEditText.setText(mNote.getTitle());
             mDescriptionEditText.setText(mNote.getDescription());
+            ((RadioButton)mRadioGroupImportance.getChildAt(mNote.getImportanceLevel())).setChecked(true);
         }
 
         Button saveButton = rootView.findViewById(R.id.btn_save_note);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("SaveButton", "\"Saved\"");
                 getFragmentManager().popBackStack();
                 Note newNote = new Note(
                         mTitleEditText.getText().toString(),
                         mDescriptionEditText.getText().toString(),
-                        1
+                        getImportanceFromRadioGroup()
                         );
                 if(mNote != null) {
                     Log.e("Update Note", "updated note called");
@@ -91,11 +101,58 @@ public class NoteFragment extends Fragment {
     public Note getCurrentNote(){
         String title = mTitleEditText.getText().toString();
         String description = mDescriptionEditText.getText().toString();
-        int importanceLevel = 0;
-        Note currentNote = new Note(title, description, importanceLevel);
+        Note currentNote = new Note(title, description, getImportanceFromRadioGroup());
         if(mNote != null){
             currentNote.setId(mNote.getId());
         }
         return currentNote;
+    }
+
+    private int getImportanceFromRadioGroup(){
+        if(mRadioGroupImportance == null){
+            return 1;
+        } else{
+            int id = mRadioGroupImportance.getCheckedRadioButtonId();
+            switch(id){
+                case R.id.radio_btn_1:
+                    return 0;
+                case R.id.radio_btn_2:
+                    return 1;
+                case R.id.radio_btn_3:
+                    return 2;
+                case R.id.radio_btn_4:
+                    return 3;
+                default:
+                    return 1;
+            }
+        }
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            setArguments(savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mNote != null) {
+            Note newNote = getCurrentNote();
+            newNote.setId(mNote.getId());
+            SharedPreferencesManager.storeNote(newNote);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

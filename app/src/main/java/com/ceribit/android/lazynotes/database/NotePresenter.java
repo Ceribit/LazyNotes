@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.ceribit.android.lazynotes.database.NoteContract.NoteEntry;
+import com.ceribit.android.lazynotes.utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /*
  * TODO: Remove android dependencies somehow...
@@ -30,12 +30,15 @@ public class NotePresenter {
 
 
         contentResolver.insert(NoteEntry.CONTENT_URI, contentValues);
+
+        SharedPreferencesManager.setNoteClicked(false);
     }
 
     public static void updateNote(Context context, Note note){
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
+
         contentValues.put(NoteEntry.COLUMN_NOTE_TITLE, note.getTitle());
         contentValues.put(NoteEntry.COLUMN_NOTE_DESCRIPTION, note.getDescription());
         contentValues.put(NoteEntry.COLUMN_NOTE_IMPORTANCE, note.getImportanceLevel());
@@ -48,9 +51,12 @@ public class NotePresenter {
                 contentValues,
                 null,
                 null);
+
+        SharedPreferencesManager.setNoteClicked(false);
     }
 
     public static ArrayList<Note> getAllNotes(Context context){
+        ArrayList<Note> noteList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
 
         Cursor cursor = contentResolver.query(NoteEntry.CONTENT_URI,
@@ -64,9 +70,8 @@ public class NotePresenter {
         int DESCRIPTION_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_DESCRIPTION);
         int IMPORTANCE_INDEX = cursor.getColumnIndex(NoteEntry.COLUMN_NOTE_IMPORTANCE);
 
-        ArrayList<Note> noteList = new ArrayList<>();
-
         cursor.moveToFirst();
+
         while (!cursor.isAfterLast()){
             Note newNote = new Note(
                     cursor.getString(TITLE_INDEX),
@@ -84,7 +89,6 @@ public class NotePresenter {
 
     public static void deleteNote(Context context, int id){
         ContentResolver contentResolver = context.getContentResolver();
-
         Uri deleteUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI, id);
         contentResolver.delete(deleteUri, null, null);
     }

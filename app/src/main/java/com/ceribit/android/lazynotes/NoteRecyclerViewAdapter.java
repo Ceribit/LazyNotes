@@ -21,12 +21,15 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     private Context mContext;
     private NoteFragment mNoteFragment = null;
 
+    // Set up the adapter to retrieve resources
     public NoteRecyclerViewAdapter(Context context, List<Note> notes) {
         super();
         mContext = context;
         mNotes = notes;
     }
 
+
+    // Create ViewHolder for the recyclerview items
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -38,11 +41,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         return viewHolder;
     }
 
+
+    // Get number of items
     @Override
     public int getItemCount() {
         return mNotes.size();
     }
 
+    // Bind the items to the existing viewholders
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Note currentNote = mNotes.get(position);
@@ -58,6 +64,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         colorArray.recycle();
     }
 
+    // ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView mTitleTextView;
         TextView mDescriptionTextView;
@@ -69,10 +76,11 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // Get info from the clicked item
                     FragmentManager fragmentManager = ((MainActivity) mContext)
                             .getSupportFragmentManager();
                     mNoteFragment = new NoteFragment();
-                    mNoteFragment.setArguments(createNoteBundle(getAdapterPosition()));
+                    mNoteFragment.setArguments(createNoteBundle(mNotes.get(getAdapterPosition())));
                     fragmentManager.beginTransaction()
                             .replace(R.id.main_container, mNoteFragment)
                             .addToBackStack(null)
@@ -82,31 +90,15 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         }
     }
 
-    public Note getClickedNote(){
-        if(mNoteFragment != null) {
-            return mNoteFragment.getCurrentNote();
-        } else{
-            return null;
-        }
-    }
-
-    private Bundle createNoteBundle(int position){
-        Bundle bundle = new Bundle();
-        bundle.putString(NoteFragment.TITLE_KEY, mNotes.get(position).getTitle());
-        bundle.putString(NoteFragment.DESCRIPTION_KEY, mNotes.get(position).getDescription());
-        bundle.putInt(NoteFragment.ID_KEY, mNotes.get(position).getId());
-        return bundle;
-    }
-
+    // Create bundle
     public static Bundle createNoteBundle(Note note){
         Bundle bundle = new Bundle();
         bundle.putString(NoteFragment.TITLE_KEY, note.getTitle());
         bundle.putString(NoteFragment.DESCRIPTION_KEY, note.getDescription());
         bundle.putInt(NoteFragment.ID_KEY, note.getId());
+        bundle.putInt(NoteFragment.IMPORTANCE_KEY, note.getImportanceLevel());
+
         return bundle;
     }
 
-    public void bindNote(NoteFragment noteFragment){
-        mNoteFragment = noteFragment;
-    }
 }

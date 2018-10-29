@@ -4,4 +4,6 @@
     <!-- Note Fragment Hints -->
     <string name="note_title_hint">Title&#8230;</string>
     <string name="note_description_hint">Write your note here!</string>
+    <string name="note_importance_grp_label">Importance:</string>
+    <!-- -->
 </resources>
