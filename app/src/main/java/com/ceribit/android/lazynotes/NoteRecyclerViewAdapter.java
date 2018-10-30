@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ceribit.android.lazynotes.database.Note;
+import com.ceribit.android.lazynotes.utils.SharedPreferencesManager;
 
 import java.util.List;
 
@@ -86,6 +87,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
                     FragmentManager fragmentManager = ((MainActivity) mContext)
                             .getSupportFragmentManager();
                     mNoteFragment = new NoteFragment();
+                    SharedPreferencesManager.setNoteClicked(true);
                     mNoteFragment.setArguments(createNoteBundle(mNotes.get(getAdapterPosition())));
 
                     fragmentManager.beginTransaction()

@@ -30,6 +30,9 @@ public class NoteFragment extends Fragment {
     private EditText mDescriptionEditText;
     private RadioGroup mRadioGroupImportance;
 
+    /* Testing */
+    private static String LOG_TAG = NoteFragment.class.getSimpleName();
+
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
@@ -40,20 +43,25 @@ public class NoteFragment extends Fragment {
             int noteId = args.getInt(ID_KEY, Note.NO_ID);
             mNote = new Note(noteTitle, noteDescription, importanceLevel);
             mNote.setId(noteId);
+            Log.e(LOG_TAG, "Stored ID upon storing args" + mNote.getId());
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.note_fragment, container, false);
+        Log.e(LOG_TAG, "NoteFragment created");
 
-        SharedPreferencesManager.setNoteClicked(true);
+        final View rootView = inflater.inflate(R.layout.note_fragment, container, false);
 
         mTitleEditText = rootView.findViewById(R.id.fragment_note_title);
         mDescriptionEditText = rootView.findViewById(R.id.fragment_note_description);
         mRadioGroupImportance = rootView.findViewById(R.id.radio_grp_importance);
 
+        if(SharedPreferencesManager.isNoteClicked() &&
+                SharedPreferencesManager.getNote().getId() != -1){
+            mNote = SharedPreferencesManager.getNote();
+        }
 
         if(mNote != null){
             mTitleEditText.setText(mNote.getTitle());
@@ -131,29 +139,37 @@ public class NoteFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null){
-            setArguments(savedInstanceState);
+            //setArguments(savedInstanceState);
         }
+        Log.e(LOG_TAG, "onActivityCreated call");
+
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(mNote != null) {
+            Note newNote = getCurrentNote();
+            newNote.setId(mNote.getId());
+            Log.e(LOG_TAG, "SaveInstance mNote ID: " + mNote.getId());
+            SharedPreferencesManager.storeNote(newNote);
+            SharedPreferencesManager.setNoteClicked(true);
+        }
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPause() {
-        super.onPause();
-        if(mNote != null) {
-            Note newNote = getCurrentNote();
-            newNote.setId(mNote.getId());
-            SharedPreferencesManager.storeNote(newNote);
+        if(mNote != null){
+            Log.e(LOG_TAG, "Pause mNote ID: " + mNote.getId());
         }
+        super.onPause();
     }
 
     @Override
     public void onDestroy() {
-
-
         super.onDestroy();
+        Log.e(LOG_TAG, "NoteFragment destroyed");
     }
+
+
 }

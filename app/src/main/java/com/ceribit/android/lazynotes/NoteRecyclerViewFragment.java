@@ -26,6 +26,8 @@ public class NoteRecyclerViewFragment extends Fragment {
     private Note mSavedInstanceNote;
     private boolean mSavedInstanceExist;
 
+    /* Testing */
+    private static String LOG_TAG = NoteRecyclerViewFragment.class.getSimpleName();
 
     public void restoreSelectedNote(Note note, boolean shouldStart){
         mSavedInstanceNote = note;
@@ -35,6 +37,8 @@ public class NoteRecyclerViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.e(LOG_TAG, "RecyclerView fragment created");
+
         View rootView = inflater.inflate(R.layout.note_recycler_view_layout, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.note_recycler_view);
 
@@ -90,5 +94,6 @@ public class NoteRecyclerViewFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.e(LOG_TAG,"RecyclerFragment deleted");
     }
 }
